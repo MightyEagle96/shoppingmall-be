@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-
+import bcrypt from "bcryptjs";
 const { Schema, model } = mongoose;
 
 const schema = new Schema({
@@ -8,6 +8,12 @@ const schema = new Schema({
   productCategories: [{ type: String }],
   email: String,
   password: String,
+});
+
+//this only works on es5 function call
+schema.pre("save", function (next) {
+  this.password = bcrypt.hashSync(this.password, 10);
+  next();
 });
 
 export default model("Vendor", schema);

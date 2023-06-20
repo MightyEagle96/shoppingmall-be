@@ -3,9 +3,22 @@ import vendorModel from "../models/vendorModel.js";
 
 export const CreateVendor = async (req, res) => {
   try {
-    const organisationId = await otpChecker();
+    req.body.organisationId = await otpChecker();
 
-    res.send({ organisationId });
+    //check if a vendor exists with this email address
+    const existingAccount = await vendorModel.findOne({
+      email: req.body.email,
+    });
+
+    if (existingAccount) {
+      return res
+        .status(400)
+        .send("A vendor account alreay exists, with this email address");
+    }
+
+    await vendorModel.create(req.body);
+
+    res.status(201).send("New vendor created");
   } catch (error) {
     res.send(505).send(new Error(error).message);
   }
