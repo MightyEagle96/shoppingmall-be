@@ -1,9 +1,11 @@
 import express from "express";
 import {
-  AttendanceSummary,
   CreateAccount,
+  IsLoggedIn,
   LoginAccount,
-} from "./controller.js";
+  RestrictTo,
+} from "./controllers/controller.js";
+import { CreateVendor } from "./controllers/adminController.js";
 
 const router = express.Router();
 
@@ -11,6 +13,9 @@ router
   .get("/", (req, res) => res.send("Hello from the backend"))
   .post("/createaccount", CreateAccount)
   .post("/login", LoginAccount)
-  .get("/attendance", AttendanceSummary);
+
+  //admin section
+  .post("/createvendor", IsLoggedIn, RestrictTo("vendor"), CreateVendor)
+  .use("*", (req, res) => res.status(404).send("Route not found"));
 
 export default router;
