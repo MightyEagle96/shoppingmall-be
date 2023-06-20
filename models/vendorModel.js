@@ -8,6 +8,7 @@ const schema = new Schema({
   productCategories: [{ type: String }],
   email: String,
   password: String,
+  role: { type: String, default: "vendor" },
 });
 
 //this only works on es5 function call

@@ -7,6 +7,7 @@ import {
 } from "./controllers/controller.js";
 import { CreateVendor } from "./controllers/adminController.js";
 import { CreateProduct } from "./controllers/productController.js";
+import { VendorLogin } from "./controllers/vendorController.js";
 
 const router = express.Router();
 
@@ -21,8 +22,9 @@ router
   .post(rootPath("createvendor"), IsLoggedIn, RestrictTo("admin"), CreateVendor)
 
   //vendor section
+  .post(rootPath("vendor/login"), VendorLogin)
   .post(
-    rootPath("createproduct"),
+    rootPath("vendor/createproduct"),
     IsLoggedIn,
     RestrictTo("vendor"),
     CreateProduct

@@ -6,6 +6,7 @@ const schema = new Schema({
   name: { type: String, trim: true },
   category: String,
   price: Number,
+  description: { type: String, trim: true },
   quantity: Number,
   imageUrl: { type: String, trim: true },
   vendor: { type: Schema.Types.ObjectId, ref: "Vendor" },
