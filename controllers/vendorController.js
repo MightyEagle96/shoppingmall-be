@@ -23,12 +23,15 @@ export const CreateProduct = async (req, res) => {
 
 export const VendorLogin = async (req, res) => {
   try {
-    const vendor = await vendorModel.findOne({ email: req.body.email });
+    const vendor = await vendorModel.findOne({
+      email: req.body.email,
+      organisationId: req.body.organisationId,
+    });
 
     if (!vendor)
       return res
         .status(400)
-        .send("No vendor exists with that email address provided");
+        .send("No vendor account found with this email address provided");
 
     const result = await bcrypt.compare(req.body.password, vendor.password);
 
@@ -36,6 +39,7 @@ export const VendorLogin = async (req, res) => {
 
     vendor.password = undefined;
     const accessToken = createAccessToken(vendor);
+
     res
       .cookie("accessToken", accessToken, {
         httpOnly: true,
